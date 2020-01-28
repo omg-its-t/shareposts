@@ -1,6 +1,8 @@
 <?php
     class Users extends Controller{
         public function __construct(){
+            //checks model folder for User.php
+            $this->userModel = $this->model('User');
 
         }
 
@@ -31,6 +33,12 @@
                 }
                 if(empty($data['email'])){
                     $data['email_error'] = 'Please enter a valid email address.';
+                }
+                else{
+                    //check if email exists from the User.php model
+                    if($this->userModel->findUserByEmail($data['email'])){
+                        $data['email_error'] = 'That email is already taken.';
+                    }
                 }
                 if(empty($data['password'])){
                     $data['password_error'] = 'Password enter a password.';
