@@ -10,6 +10,9 @@ require_once 'config/config.php';
 *require_once 'libraries/Database.php';
 */
 
+//load helpers file
+require_once 'helpers/url_helper.php';
+
 
 //autoload core libraries instead of manually including all the files needed
 spl_autoload_register(function($className){
