@@ -68,6 +68,7 @@
                 //call model to register users
                 if($this->userModel->register($data)){
                     //if all is well redirect to login page
+                    flash('register_success', 'You have successfully registered. Please login to contunue.');
                     redirect('users/login');
                 }
                 else{
