@@ -26,6 +26,24 @@
             }
         }
 
+        //log in user
+        public function login($email, $password){
+            //create query
+            $this->db->query('SELECT * FROM users WHERE email = :email');
+            $this->db->bind(':email', $email);
+
+            $row = $this->db->single();
+            //get hashed password from query
+            $hashed_password = $row->password;
+
+            //check password
+            if(password_verify($password, $hashed_password)){
+                return $row;
+            }
+            else{
+                return false;
+            }
+        }
 
         //find user by email to check if user already used email address
         //this function is used in the controller users.php

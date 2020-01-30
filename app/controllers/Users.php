@@ -123,9 +123,30 @@
                     $data['password_error'] = 'Please confirm your password.';
                 }
 
+                //check for user/email
+                if($this->userModel->findUserByEmail($data['email'])){
+                    //user found no error set
+                }
+                    //user not found
+                    else{
+                        $data['email_error'] = "No User Found";
+                    }
+                
+
                 //make sure errors are empty
                 if(empty($data['email_error']) && empty($data['password_error'])){
-                    die('SUCCESS');
+                    //check and set logged in user
+                    $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+                    //this variable holds eitehr the user row or false (value from user.php controller)
+                    if($loggedInUser){
+                        //create session variables
+                        die('it worked');
+                    }
+                    else{
+                        //re-render form with errors
+                        $data['password_error'] = 'Password Incorrect';
+                        $this->view('users/login', $data);
+                    }
                 } else{
                     //load view with errors
                     $this->view('users/login', $data);
