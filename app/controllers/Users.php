@@ -74,16 +74,16 @@
                 else{
                     die('Something went wrong');
                 }
-                
-                
-            } else{
+            } 
+            else{
                 //load view with errors
                 $this->view('users/register', $data);
             } 
             
             
             
-        }else{
+        }
+        else{
                 //load form setting empty array incase of error, user input will be saved.
                 $data = [
                     'name' => '',
@@ -132,7 +132,6 @@
                         $data['email_error'] = "No User Found";
                     }
                 
-
                 //make sure errors are empty
                 if(empty($data['email_error']) && empty($data['password_error'])){
                     //check and set logged in user
@@ -140,31 +139,56 @@
                     //this variable holds eitehr the user row or false (value from user.php controller)
                     if($loggedInUser){
                         //create session variables
-                        die('it worked');
+                        $this->createUserSession($loggedInUser);
                     }
                     else{
                         //re-render form with errors
                         $data['password_error'] = 'Password Incorrect';
                         $this->view('users/login', $data);
                     }
-                } else{
+                } 
+                else{
                     //load view with errors
                     $this->view('users/login', $data);
-                } 
-
-
-            } else{
+                }
+            } 
+            else{
                 //load form setting empty array incase of error, user input will be saved.
                 $data = [
                     'email' => '',
                     'password' => '',
                     'email_error' => '',
                     'password_error' => '',
-
                 ];
 
                 //load view 
                 $this->view('users/login', $data);
+            }
+        }
+
+        public function createUserSession($user){
+            //user is comming from model when we did login function
+            //its inside the $row we return
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['email'] = $user->email;
+            $_SESSION['name'] = $user->name;
+            redirect('pages/index');
+        }
+
+        public function logOut(){
+            //removing session variables
+            unset($_SESSION['user_id']);
+            unset($_SESSION['email']);
+            unset($_SESSION['name']);
+            redirect('users/login');
+        }
+
+        public function isLoggedIn(){
+            if(isset($_SESSION['user_id'])){
+                return true;
+            }
+            else{
+                return false;
             }
         }
     }
