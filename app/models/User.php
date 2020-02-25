@@ -64,4 +64,18 @@
                 return false;
             }
         }
+
+        public function getUserById($id){
+            //calling our query in database.php
+            $this->db->query('SELECT * FROM users WHERE id = :id');
+            //bind values
+            $this->db->bind(':id', $id);
+
+            //calling single method we created in database.php
+            $row = $this->db->single();
+
+            //return user
+            return $row;
+
+        }
     }
