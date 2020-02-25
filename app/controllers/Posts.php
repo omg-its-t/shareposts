@@ -23,4 +23,16 @@ class Posts extends Controller{
         //load a view
         $this->view('posts/index', $data);
     }
+
+    public function add(){
+
+        //post will be empty
+        $data = [
+            'title' => '',
+            'body' => '',
+        ];
+
+        //load a view
+        $this->view('posts/add', $data);
+    }
 }
