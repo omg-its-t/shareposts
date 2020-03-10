@@ -72,6 +72,62 @@ class Posts extends Controller{
         }
     }
 
+    public function edit($id){
+        //check to see if post request
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            //sanitize post
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'id' => $id,
+                'title' => trim($_POST['title']),
+                'body' => trim($_POST['body']),
+                'user_id' => $_SESSION['user_id'],
+                'title_error' => '',
+                'body_error' => '',
+            ];
+
+            //validate data
+            if(empty($data['title'])){
+                $data['title_error'] = 'Please enter a title.';
+            }
+            if(empty($data['body'])){
+                $data['body_error'] = 'Please enter post body.';
+            }
+
+            //make sure no errors
+            if(empty($data['title_error']) && empty($data['body_error'])){
+                //updatePost() from models/Post.php
+                if($this->postModel->updatePost($data)){
+                    flash('post_message', 'Post Updated');
+                    redirect('posts');
+                } else{
+                    die('Sorry, something went wrong.');
+                }
+            } else {
+                //load view with errors
+                $this->view('posts/edit', $data);
+            }
+
+        } else{
+            //get existing post from model
+            $post = $this->postModel->getPostById($id);
+
+            //check for owner
+            if($post->user_id != $_SESSION['user_id']){
+                redirect('posts');
+            }
+
+            $data = [
+                'id' => $id,
+                'title' => $post->title,
+                'body' => $post->body,
+            ];
+            //load a view
+            $this->view('posts/edit', $data);
+        }
+    }
+
     public function show($id){
         $post = $this->postModel->getPostById($id);
         $user = $this->userModel->getUserById($post->user_id);
