@@ -19,6 +19,9 @@
 
         <?php if(isset($_SESSION['user_id'])) : ?>
           <li class="nav-item">
+              <a class="nav-link" href="#">Welcome <?php $_SESSION['name']; ?></a>
+          </li>
+          <li class="nav-item">
               <a class="nav-link" href="<?php echo URLROOT;?>/users/logout">Log Out</a>
           </li>
           <?php else : ?>
@@ -28,6 +31,7 @@
             <li class="nav-item">
               <a class="nav-link" href="<?php echo URLROOT;?>/users/login">Login</a>
             </li>
+
         <?php endif; ?>
       </ul>
     </div>

@@ -138,4 +138,18 @@ class Posts extends Controller{
 
         $this->view('posts/show', $data);
     }
+
+    public function delete($id){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            if($this->postModel->deletePost($id)){
+                flash('post_message', 'Post has been blown to outerspace.');
+                redirect('posts');
+            } else{
+                die('Something messed up, try again later bro.');
+            }
+        } else{
+            redirect('posts');
+        }
+        
+    }
 }

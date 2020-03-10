@@ -64,4 +64,19 @@
             }
         }
 
+        public function deletePost($id){
+            //prepare query
+            $this->db->query('DELETE FROM posts WHERE id=:id');
+            //bind values
+            $this->db->bind(':id', $id);
+
+            //execute statement with execute() from database.php
+            if($this->db->execute()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
     }
